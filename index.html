@@ -4,9 +4,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Sint-Martinus Lesplanner</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -16,6 +21,7 @@
       font-family: "Segoe UI", Arial, sans-serif;
       color: #173e61;
     }
+
     .card {
       width: min(430px, calc(100% - 32px));
       padding: 30px;
@@ -23,20 +29,39 @@
       border-radius: 16px;
       box-shadow: 0 8px 30px #123b6619;
     }
-    h1 { margin-top: 0; }
-    p { line-height: 1.5; }
+
+    h1 {
+      margin-top: 0;
+      line-height: 1.3;
+    }
+
+    p {
+      line-height: 1.5;
+    }
+
     label {
       display: block;
       margin: 16px 0 6px;
       font-weight: 600;
     }
-    input, button {
+
+    input,
+    button {
       width: 100%;
       padding: 12px;
       border-radius: 8px;
       font: inherit;
     }
-    input { border: 1px solid #b8cadb; }
+
+    input {
+      border: 1px solid #b8cadb;
+    }
+
+    input:focus {
+      outline: 2px solid #176da9;
+      outline-offset: 1px;
+    }
+
     button {
       margin-top: 20px;
       background: #176da9;
@@ -44,113 +69,255 @@
       border: none;
       cursor: pointer;
     }
-    button:disabled { opacity: .6; }
-    #app { display: none; }
-    #message { color: #ad2930; }
+
+    button:hover {
+      background: #125783;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: wait;
+    }
+
+    #app {
+      display: none;
+    }
+
+    #message {
+      color: #ad2930;
+    }
+
+    #status {
+      color: #46647d;
+    }
   </style>
 </head>
+
 <body>
 
+  <!-- AANMELDSCHERM -->
+
   <section class="card" id="login">
+
     <h1>Sint-Martinus Lesplanner</h1>
+
     <p>Beveiligde toegang voor leerkrachten.</p>
 
     <form id="loginForm">
+
       <label for="email">E-mailadres</label>
-      <input id="email" type="email" required>
+
+      <input
+        id="email"
+        type="email"
+        autocomplete="username"
+        required
+      >
 
       <label for="password">Wachtwoord</label>
-      <input id="password" type="password" required>
+
+      <input
+        id="password"
+        type="password"
+        autocomplete="current-password"
+        required
+      >
 
       <button id="submit" type="submit">
         Aanmelden
       </button>
+
       <p id="message" role="alert"></p>
+
     </form>
+
   </section>
 
+
+  <!-- SCHERM NA AANMELDEN -->
+
   <section class="card" id="app">
+
     <h1>Sint-Martinus Lesplanner</h1>
+
     <p id="welcome"></p>
+
     <p>
-      Aanmelding gelukt.
+      Je bent succesvol aangemeld bij Appwrite.
+    </p>
+
+    <p id="status">
       De volledige online lesplanner wordt
       in de volgende stap gekoppeld.
     </p>
-    <button id="logout">Afmelden</button>
+
+    <button id="logout" type="button">
+      Afmelden
+    </button>
+
   </section>
 
+
+  <!-- APPWRITE -->
+
   <script type="module">
+
     import { Client, Account } from
       "https://cdn.jsdelivr.net/npm/appwrite@17.0.0/+esm";
 
+
+    // APPWRITE VERBINDING
+
     const client = new Client()
-      .setEndpoint("https://fra.cloud.appwrite.io/v1")
-      .setProject("6af77aa00021b3e71ecc");
+      .setEndpoint(
+        "https://fra.cloud.appwrite.io/v1"
+      )
+      .setProject(
+        "6af77aa00021b3e71ecc"
+      );
 
     const account = new Account(client);
 
+
+    // ELEMENTEN
+
     const login = document.getElementById("login");
     const app = document.getElementById("app");
+
     const message = document.getElementById("message");
 
+    const submitButton =
+      document.getElementById("submit");
+
+
+    // AANMELDSCHERM TONEN
+
     function showLogin() {
+
       app.style.display = "none";
       login.style.display = "block";
+
     }
+
+
+    // SCHERM NA AANMELDEN
 
     function showApp(user) {
+
       login.style.display = "none";
       app.style.display = "block";
+
       document.getElementById("welcome").textContent =
         "Welkom, " + (user.name || user.email);
+
     }
 
+
+    // BESTAANDE SESSIE CONTROLEREN
+
     async function checkLogin() {
+
       try {
+
         const user = await account.get();
+
         showApp(user);
-      } catch {
+
+      } catch (error) {
+
         showLogin();
+
       }
+
     }
+
+
+    // AANMELDEN
 
     document.getElementById("loginForm")
       .addEventListener("submit", async (event) => {
+
         event.preventDefault();
+
         message.textContent = "";
 
-        const button = document.getElementById("submit");
-        button.disabled = true;
+        submitButton.disabled = true;
+        submitButton.textContent = "Aanmelden...";
+
+        const email =
+          document.getElementById("email").value.trim();
+
+        const password =
+          document.getElementById("password").value;
 
         try {
-          await account.createEmailPasswordSession({
-            email: document.getElementById("email").value,
-            password: document.getElementById("password").value
-          });
 
-          await checkLogin();
+          // Appwrite SDK versie 17:
+          // email en password afzonderlijk doorgeven
+
+          await account.createEmailPasswordSession(
+            email,
+            password
+          );
+
+          // Wachtwoord uit invoerveld wissen
+
+          document.getElementById("password").value = "";
+
+          // Gebruiker ophalen
+
+          const user = await account.get();
+
+          showApp(user);
+
         } catch (error) {
+
+          console.error("Appwrite aanmeldfout:", error);
+
           message.textContent =
-            "Aanmelden mislukt. Controleer je gegevens.";
-          console.error(error);
+            "Aanmelden mislukt: " +
+            (error.message || "Onbekende fout");
+
         } finally {
-          button.disabled = false;
+
+          submitButton.disabled = false;
+          submitButton.textContent = "Aanmelden";
+
         }
+
       });
+
+
+    // AFMELDEN
 
     document.getElementById("logout")
       .addEventListener("click", async () => {
+
         try {
-          await account.deleteSession({
-            sessionId: "current"
-          });
-        } finally {
+
+          await account.deleteSession("current");
+
           showLogin();
+
+        } catch (error) {
+
+          console.error("Afmelden mislukt:", error);
+
+          alert(
+            "Afmelden mislukt. Probeer opnieuw."
+          );
+
         }
+
       });
 
+
+    // BIJ OPENEN AUTOMATISCH CONTROLEREN
+
     checkLogin();
+
   </script>
+
 </body>
 </html>
+
