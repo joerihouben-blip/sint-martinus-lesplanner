@@ -1,4 +1,4 @@
-v<!--
+<!--
 ==========================================================================
  SINT-MARTINUS LESPLANNER — BRONCODE EN DOCUMENTATIE
  Copyright (c) 2026 Joeri Houben. Alle rechten voorbehouden.
@@ -1384,9 +1384,9 @@ async function smPurgePupils(){
  }catch(e){show('⚠ Opschoning niet volledig: '+e.message);alert('Opschoning onderbroken: '+e.message+'\nBewaar de gedownloade online back-up.');}
  finally{busy=false;}
 }
-document.getElementById('sm-purge-pupils').addEventListener('click',smPurgePupils);
+document.getElementById('sm-purge-pupils')?.addEventListener('click',smPurgePupils);
 
-document.getElementById('smCompleteDbFile').addEventListener('change',async event=>{
+document.getElementById('smCompleteDbFile')?.addEventListener('change',async event=>{
  const input=event.target,file=input.files?.[0];if(!file)return;
  try{
   if(!ready)throw Error('De online verbinding is nog niet klaar. Meld je eerst aan en wacht op de status bovenaan.');
