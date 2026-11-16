@@ -1213,6 +1213,8 @@ import {Client,Account,Databases,Query,ID} from "https://cdn.jsdelivr.net/npm/ap
 const client=new Client().setEndpoint("https://fra.cloud.appwrite.io/v1").setProject("6af77aa00021b3e71ecc");
 const account=new Account(client), tables=new Databases(client);
 const DB="sint-martinus", TABLE="lessen";
+// Zelfstandige opslagsleutel voor de Appwrite-module; geen afhankelijkheid van een ander script.
+const KEY="sint_martinus_pc_complete_v1";
 const sections=["lessons","projects","questions","tests","referrals","agenda"];
 const metaSections=["years","year","teachers","subjects","students","codes","projectStepTemplates"];
 const status=document.getElementById('folderStatus');
