@@ -564,9 +564,9 @@ window.addEventListener('DOMContentLoaded',init);
  links.innerHTML='<h3>Meerdere lessen koppelen</h3><div class="two"><div><label>Beschikbare lessen (meerdere selecteren)</label><select id="smAvailableLessons" multiple></select><p class="note">Ctrl ingedrukt houden om meerdere lessen tegelijk te selecteren.</p><button class="btn" type="button" id="smLinkLessons">+ Geselecteerde lessen koppelen</button></div><div><label>Gekoppelde lessen</label><div id="smLinkedLessons"></div><button class="btn" type="button" id="smCopyGoals">Leerplandoelen uit gekoppelde lessen toevoegen</button></div></div>';
  $el('projectGoalPicker').after(links);
  let lessonIds=[],templateId='',projectCode='';
- const library=()=>{const seen=new Map();for(const p of db.projects||[]){const id=p.templateId||p.id;if(!seen.has(id))seen.set(id,p)}return [...seen.values()]};
- function refreshReuse(){const cur=$el('smReuseProject').value;$el('smReuseProject').innerHTML='<option value="">— Selecteer een bestaand project —</option>'+library().map(p=>`<option value="${html(p.templateId||p.id)}">${html(p.code||'PRJ')} · ${html(p.title)} (${html(p.year)})</option>`).join('');$el('smReuseProject').value=cur;$el('smProjectYear').value=db.year}
- function linked(){const selected=new Set(lessonIds);$el('smAvailableLessons').innerHTML=(db.lessons||[]).filter(l=>!selected.has(l.id)).map(l=>`<option value="${html(l.id)}">${html(l.code)} · ${html(l.title)} · ${html(l.teacher)} (${html(l.year)})</option>`).join('');$el('smLinkedLessons').innerHTML=lessonIds.length?lessonIds.map(id=>{const l=db.lessons.find(x=>x.id===id);return `<div class="row spread" style="padding:7px;border-bottom:1px solid #c8d9e6"><span>${html(l?.code||'Les')} · ${html(l?.title||'Niet meer beschikbaar')} <small>${html(l?.teacher||'')}</small></span><button type="button" class="btn small danger" data-remove-lesson="${html(id)}">Verwijder</button></div>`}).join(''):'<p class="muted">Nog geen lessen gekoppeld.</p>'}
+ const library=()=>{const seen=new Map();for(const p of (db?.projects||[])){const id=p.templateId||p.id;if(!seen.has(id))seen.set(id,p)}return [...seen.values()]};
+ function refreshReuse(){const cur=$el('smReuseProject').value;$el('smReuseProject').innerHTML='<option value="">— Selecteer een bestaand project —</option>'+library().map(p=>`<option value="${html(p.templateId||p.id)}">${html(p.code||'PRJ')} · ${html(p.title)} (${html(p.year)})</option>`).join('');$el('smReuseProject').value=cur;if(db)$el('smProjectYear').value=db.year}
+ function linked(){const selected=new Set(lessonIds);$el('smAvailableLessons').innerHTML=(db?.lessons||[]).filter(l=>!selected.has(l.id)).map(l=>`<option value="${html(l.id)}">${html(l.code)} · ${html(l.title)} · ${html(l.teacher)} (${html(l.year)})</option>`).join('');$el('smLinkedLessons').innerHTML=lessonIds.length?lessonIds.map(id=>{const l=db.lessons.find(x=>x.id===id);return `<div class="row spread" style="padding:7px;border-bottom:1px solid #c8d9e6"><span>${html(l?.code||'Les')} · ${html(l?.title||'Niet meer beschikbaar')} <small>${html(l?.teacher||'')}</small></span><button type="button" class="btn small danger" data-remove-lesson="${html(id)}">Verwijder</button></div>`}).join(''):'<p class="muted">Nog geen lessen gekoppeld.</p>'}
  function calcFields(p){$el('smPrecalc').value=p?.precalc??p?.phases?.['Voorcalculatie']??'';$el('smPostcalc').value=p?.postcalc??p?.phases?.['Nacalculatie']??'';lessonIds=[...(p?.lessonIds||[])];templateId=p?.templateId||p?.id||'';projectCode=p?.code||'';linked();refreshReuse()}
  const oldNew=newProject,oldOpen=openProject,oldSave=saveProject,oldSelect=renderProjectSelect;
  newProject=function(){oldNew();calcFields(null);refreshReuse()};
@@ -1173,9 +1173,9 @@ async function smOpenCompleteDatabase(event){
 </script>
 </body>
 <script type="module" id="sm-appwrite-auth">
-import {Client,Account,TablesDB,Query,ID} from "https://cdn.jsdelivr.net/npm/appwrite@17.0.0/+esm";
+import {Client,Account,Databases,Query,ID} from "https://cdn.jsdelivr.net/npm/appwrite@17.0.0/+esm";
 const client=new Client().setEndpoint("https://fra.cloud.appwrite.io/v1").setProject("6af77aa00021b3e71ecc");
-const account=new Account(client), tables=new TablesDB(client);
+const account=new Account(client), tables=new Databases(client);
 const DB="sint-martinus", TABLE="lessen";
 const sections=["lessons","projects","questions","tests","referrals","agenda"];
 const metaSections=["years","year","teachers","subjects","students","codes","projectStepTemplates"];
@@ -1191,7 +1191,7 @@ const snapshot=()=>{
  return rows;
 };
 const digest=async s=>{const bytes=new TextEncoder().encode(s);const hash=await crypto.subtle.digest('SHA-256',bytes);return 'sm'+[...new Uint8Array(hash)].slice(0,15).map(x=>x.toString(16).padStart(2,'0')).join('')};
-const listAll=async()=>{let out=[],offset=0;while(true){const r=await tables.listRows({databaseId:DB,tableId:TABLE,queries:[Query.limit(100),Query.offset(offset)]});out.push(...r.rows);if(r.rows.length<100)break;offset+=100;if(offset>10000)throw Error('Te veel records')};return out};
+const listAll=async()=>{let out=[],offset=0;while(true){const r=await tables.listDocuments(DB,TABLE,[Query.limit(100),Query.offset(offset)]);out.push(...r.documents);if(r.documents.length<100)break;offset+=100;if(offset>10000)throw Error('Te veel records')};return out};
 const dataFromRows=rows=>{
  const d={years:['2026-2027'],year:'2026-2027',teachers:[],subjects:[],students:{},codes:{},projectStepTemplates:{}};
  for(const k of sections)d[k]=[];
@@ -1226,7 +1226,7 @@ async function uploadAll(){
   for(const r of rows){const k=key(r.kind,{id:r.itemId});
    if(!found.has(k)){
     const rowId=await digest(k);
-    await tables.createRow({databaseId:DB,tableId:TABLE,rowId,data:{kind:r.kind,itemId:r.itemId,payload:r.payload}});
+    await tables.createDocument(DB,TABLE,rowId,{kind:r.kind,itemId:r.itemId,payload:r.payload});
     created++;
    }
    show('Online importeren: '+(++i)+' / '+rows.length+' (nieuw: '+created+')');
@@ -1252,8 +1252,8 @@ async function sync(){
    if((old?.$updatedAt||null)!==(now?.$updatedAt||null))throw Error('Een collega heeft dezelfde gegevens aangepast ('+k+'). Vernieuw eerst online; je browserkopie blijft bewaard.');
   }
   for(const r of changes){const k=key(r.kind,{id:r.itemId}),existing=remoteMap.get(k),rowId=existing?.$id||await digest(k);
-   if(existing)await tables.updateRow({databaseId:DB,tableId:TABLE,rowId,data:{payload:r.payload}});
-   else await tables.createRow({databaseId:DB,tableId:TABLE,rowId,data:{kind:r.kind,itemId:r.itemId,payload:r.payload}});
+   if(existing)await tables.updateDocument(DB,TABLE,rowId,{payload:r.payload});
+   else await tables.createDocument(DB,TABLE,rowId,{kind:r.kind,itemId:r.itemId,payload:r.payload});
   }
   if(changes.length){buildBaseline(await fetchRemote());show('✓ Online opgeslagen · '+changes.length+' wijzigingen');}
  }catch(e){allowWrites=false;show('⚠ Synchronisatie gestopt: '+e.message);alert('Online opslaan mislukt. Maak nu een JSON-back-up.\n'+e.message)}finally{busy=false;}
