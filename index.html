@@ -288,37 +288,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 <\/script>
 
-<script>
-/* Klassen zijn vaste schoolstructuur en onafhankelijk van leerlinggegevens. */
-(function(){
- const CLASSES=['5 SVI','6 SVI','7 SVI'];
- function restoreClassSelectors(){
-   const ids=['lClass','pClass','tClass','manageClass','libraryClass','agClass','ovClass'];
-   ids.forEach(id=>{
-     const el=document.getElementById(id);if(!el)return;
-     const previous=el.value;
-     const allowAll=['libraryClass','ovClass'].includes(id);
-     const labels=[...(allowAll?['']:[]),...CLASSES];
-     const valid=labels.length===el.options.length&&labels.every((v,i)=>el.options[i].value===v);
-     if(!valid){el.replaceChildren();labels.forEach(v=>{const opt=document.createElement('option');opt.value=v;opt.textContent=v||'Alle klassen';el.appendChild(opt);});}
-     el.value=labels.includes(previous)?previous:(allowAll?'':'5 SVI');
-   });
- }
- // Observe class selects, since cloud loading can repopulate them asynchronously.
- let pending=false;
- const observer=new MutationObserver(()=>{
-   if(pending)return;
-   pending=true;
-   queueMicrotask(()=>{pending=false;restoreClassSelectors();});
- });
- window.addEventListener('DOMContentLoaded',()=>{
-   restoreClassSelectors();
-   ['lClass','pClass','tClass','manageClass','libraryClass','agClass','ovClass'].forEach(id=>{
-     const el=document.getElementById(id);if(el)observer.observe(el,{childList:true});
-   });
- });
-})();
-</script>
 </body></html>`;const w=window.open('','_blank');if(!w)return alert('Sta pop-ups toe om de toets af te drukken.');w.document.write(html);w.document.close();w.focus();w.print()}function printPage(id){go(id);window.print()}
 /* Veilige losse lesimport: raakt geen andere databankcollecties aan. */
 async function importSeparateLessons(event){
@@ -702,37 +671,6 @@ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',
 })();
 <\/script>
 
-<script>
-/* Klassen zijn vaste schoolstructuur en onafhankelijk van leerlinggegevens. */
-(function(){
- const CLASSES=['5 SVI','6 SVI','7 SVI'];
- function restoreClassSelectors(){
-   const ids=['lClass','pClass','tClass','manageClass','libraryClass','agClass','ovClass'];
-   ids.forEach(id=>{
-     const el=document.getElementById(id);if(!el)return;
-     const previous=el.value;
-     const allowAll=['libraryClass','ovClass'].includes(id);
-     const labels=[...(allowAll?['']:[]),...CLASSES];
-     const valid=labels.length===el.options.length&&labels.every((v,i)=>el.options[i].value===v);
-     if(!valid){el.replaceChildren();labels.forEach(v=>{const opt=document.createElement('option');opt.value=v;opt.textContent=v||'Alle klassen';el.appendChild(opt);});}
-     el.value=labels.includes(previous)?previous:(allowAll?'':'5 SVI');
-   });
- }
- // Observe class selects, since cloud loading can repopulate them asynchronously.
- let pending=false;
- const observer=new MutationObserver(()=>{
-   if(pending)return;
-   pending=true;
-   queueMicrotask(()=>{pending=false;restoreClassSelectors();});
- });
- window.addEventListener('DOMContentLoaded',()=>{
-   restoreClassSelectors();
-   ['lClass','pClass','tClass','manageClass','libraryClass','agClass','ovClass'].forEach(id=>{
-     const el=document.getElementById(id);if(el)observer.observe(el,{childList:true});
-   });
- });
-})();
-</script>
 </body></html>`;
  const w=window.open('','_blank');if(!w){alert('Sta pop-ups toe om de toets af te drukken.');return;}
  w.document.open();w.document.write(html);w.document.close();w.focus();setTimeout(()=>w.print(),300);
@@ -1112,37 +1050,6 @@ function printLibraryLessonPDF(id){
  ${block('Slot en reflectie',lesson.conclusion)}
  ${block('Afsluitende vragen',lesson.exit)}
  <div class="foot">Gemaakt door Joeri Houben voor Sint-Martinus Herk-de-Stad</div>
-<script>
-/* Klassen zijn vaste schoolstructuur en onafhankelijk van leerlinggegevens. */
-(function(){
- const CLASSES=['5 SVI','6 SVI','7 SVI'];
- function restoreClassSelectors(){
-   const ids=['lClass','pClass','tClass','manageClass','libraryClass','agClass','ovClass'];
-   ids.forEach(id=>{
-     const el=document.getElementById(id);if(!el)return;
-     const previous=el.value;
-     const allowAll=['libraryClass','ovClass'].includes(id);
-     const labels=[...(allowAll?['']:[]),...CLASSES];
-     const valid=labels.length===el.options.length&&labels.every((v,i)=>el.options[i].value===v);
-     if(!valid){el.replaceChildren();labels.forEach(v=>{const opt=document.createElement('option');opt.value=v;opt.textContent=v||'Alle klassen';el.appendChild(opt);});}
-     el.value=labels.includes(previous)?previous:(allowAll?'':'5 SVI');
-   });
- }
- // Observe class selects, since cloud loading can repopulate them asynchronously.
- let pending=false;
- const observer=new MutationObserver(()=>{
-   if(pending)return;
-   pending=true;
-   queueMicrotask(()=>{pending=false;restoreClassSelectors();});
- });
- window.addEventListener('DOMContentLoaded',()=>{
-   restoreClassSelectors();
-   ['lClass','pClass','tClass','manageClass','libraryClass','agClass','ovClass'].forEach(id=>{
-     const el=document.getElementById(id);if(el)observer.observe(el,{childList:true});
-   });
- });
-})();
-</script>
 </body></html>`;
  popup.document.open();popup.document.write(doc);popup.document.close();popup.focus();
 }
