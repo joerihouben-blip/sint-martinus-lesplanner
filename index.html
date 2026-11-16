@@ -95,7 +95,7 @@ table{border-collapse:collapse;width:100%}th{background:#edf4fa!important;text-a
 #agStudents input[data-rating]::-moz-range-thumb{width:19px;height:19px;border-radius:50%;background:#164d77;border:3px solid white;box-shadow:0 0 0 1px #164d77;cursor:grab}
 #agStudents .ag-rating-legend{display:flex;justify-content:space-between;font-size:11px;color:#50667a;margin-top:5px}
 .ag-prev{background:#eef5fb;border-left:4px solid #2b7db6;padding:10px 12px;margin:8px 0 14px;border-radius:6px}.ag-history{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px}.ag-history>div{padding:10px;border:1px solid #c9d9e6;border-radius:8px;background:#f7fafc}.ag-rating-legend{display:flex;justify-content:space-between;font-size:11px;margin-top:4px}#agStudents input[data-rating]{width:100%;height:16px;accent-color:#2979ba;background:linear-gradient(to right,#fff 0%,#e45151 25%,#f2a53d 50%,#42b96b 75%,#438ee2 100%)}
-</style><style id="sm-auth-css">body{visibility:hidden}body.sm-auth-ok{visibility:visible}#sm-auth-cover{position:fixed;inset:0;z-index:2147483647;background:#edf3f9;display:grid;place-items:center;font-family:Segoe UI,Arial,sans-serif;color:#173e61;visibility:visible}body.sm-auth-ok #sm-auth-cover{display:none}.sm-auth-card{background:#fff;width:min(430px,calc(100% - 30px));padding:28px;border-radius:16px;box-shadow:0 8px 30px #123b6619}.sm-auth-card input,.sm-auth-card button{display:block;width:100%;box-sizing:border-box;padding:12px;margin:9px 0 17px;border-radius:8px;font:inherit}.sm-auth-card input{border:1px solid #b8cadb}.sm-auth-card button{background:#176da9;color:white;border:0;cursor:pointer}.sm-auth-error{color:#ad2930;white-space:pre-wrap}</style></head><body><div id="sm-auth-cover"><div class="sm-auth-card"><h2>Sint-Martinus Lesplanner</h2><p>Log in met je Appwrite-account.</p><form id="sm-auth-form"><label for="sm-auth-email">E-mailadres</label><input id="sm-auth-email" type="email" autocomplete="username" required><label for="sm-auth-pass">Wachtwoord</label><input id="sm-auth-pass" type="password" autocomplete="current-password" required><button id="sm-auth-submit" type="submit">Aanmelden</button></form><p id="sm-auth-error" class="sm-auth-error" role="alert"></p></div></div><header><div><h1>Sint-Martinus · Lesplanner</h1><small>Online lesplanner · Sint-Martinus Herk-de-Stad</small></div><div class="row"><label style="color:white">Schooljaar <select id="year" onchange="yearChanged()"></select></label><span id="folderStatus" style="font-size:12px;color:#e6f6ff">Appwrite wordt gecontroleerd…</span><button class="btn" type="button" onclick="document.getElementById('smCompleteDbFile').click()">📥 Eenmalig gegevens koppelen</button><input id="smCompleteDbFile" type="file" accept=".json,application/json" style="display:none" ><button class="btn" onclick="backup()">Back-up downloaden</button><button class="btn" type="button" id="sm-cloud-refresh" style="display:none">↻ Online verversen</button><button class="btn primary" type="button" id="sm-cloud-import" style="display:none">↑ Database online plaatsen</button></div></header><nav id="nav"></nav><main class="wrap">
+</style><style id="sm-auth-css">body{visibility:hidden}body.sm-auth-ok{visibility:visible}#sm-auth-cover{position:fixed;inset:0;z-index:2147483647;background:#edf3f9;display:grid;place-items:center;font-family:Segoe UI,Arial,sans-serif;color:#173e61;visibility:visible}body.sm-auth-ok #sm-auth-cover{display:none}.sm-auth-card{background:#fff;width:min(430px,calc(100% - 30px));padding:28px;border-radius:16px;box-shadow:0 8px 30px #123b6619}.sm-auth-card input,.sm-auth-card button{display:block;width:100%;box-sizing:border-box;padding:12px;margin:9px 0 17px;border-radius:8px;font:inherit}.sm-auth-card input{border:1px solid #b8cadb}.sm-auth-card button{background:#176da9;color:white;border:0;cursor:pointer}.sm-auth-error{color:#ad2930;white-space:pre-wrap}</style></head><body><div id="sm-auth-cover"><div class="sm-auth-card"><h2>Sint-Martinus Lesplanner</h2><p>Log in met je Appwrite-account.</p><form id="sm-auth-form"><label for="sm-auth-email">E-mailadres</label><input id="sm-auth-email" type="email" autocomplete="username" required><label for="sm-auth-pass">Wachtwoord</label><input id="sm-auth-pass" type="password" autocomplete="current-password" required><button id="sm-auth-submit" type="submit">Aanmelden</button></form><p id="sm-auth-error" class="sm-auth-error" role="alert"></p></div></div><header><div><h1>Sint-Martinus · Lesplanner</h1><small>Online lesplanner · Sint-Martinus Herk-de-Stad</small></div><div class="row"><label style="color:white">Schooljaar <select id="year" onchange="yearChanged()"></select></label><span id="folderStatus" style="font-size:12px;color:#e6f6ff">Appwrite wordt gecontroleerd…</span><button class="btn" type="button" onclick="document.getElementById('smCompleteDbFile').click()">📥 Eenmalig gegevens koppelen</button><input id="smCompleteDbFile" type="file" accept=".json,application/json" style="display:none" ><button class="btn" onclick="backup()">Back-up downloaden</button><button class="btn" type="button" id="sm-cloud-refresh" style="display:none">↻ Online verversen</button><button class="btn primary" type="button" id="sm-cloud-import" style="display:none">↑ Import hervatten</button></div></header><nav id="nav"></nav><main class="wrap">
 <section id="home" class="page active"><div class="dashboard-intro"><h2>Mijn lesplanner</h2><p>Alle voorbereidingen, leerplandoelen, leerlingen en projecten op één plaats. Je bestaande gegevens blijven behouden.</p></div>
 <div class="dashboard-stats" id="smDashboardStats"><div class="dashboard-stat"><strong>—</strong><span>Lessen</span></div></div>
 <div class="dashboard-actions">
@@ -1184,6 +1184,8 @@ const status=document.getElementById('folderStatus');
 const form=document.getElementById('sm-auth-form'),err=document.getElementById('sm-auth-error'),submit=document.getElementById('sm-auth-submit');
 let ready=false,busy=false,timer=null,baseline=new Map(),loaded=false,allowWrites=false;
 const show=t=>{status.textContent=t;};
+const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+async function createWithRetry(rowId,data){for(let attempt=0;attempt<7;attempt++){try{return await tables.createDocument(DB,TABLE,rowId,data)}catch(e){if(e.code===409)return null;if((e.code===429||e.code>=500||e.code===0)&&attempt<6){await pause(Math.min(15000,900*Math.pow(2,attempt)));continue}throw e}}}
 const key=(kind,item)=>kind+":"+String(item.id);
 const snapshot=()=>{
  const rows=[];
@@ -1205,14 +1207,20 @@ const apply=rows=>{const d=dataFromRows(rows);localStorage.setItem(KEY,JSON.stri
 const buildBaseline=rows=>{baseline=new Map(rows.map(r=>[key(r.kind,{id:r.itemId}),r]));};
 async function fetchRemote(){return await listAll()}
 async function initialLoad(){
- show('Online gegevens laden…');
+ show('Online gegevens controleren…');
  try{
-  const rows=await fetchRemote();
-  buildBaseline(rows);
-  if(rows.length){const hasMeta=rows.some(r=>r.kind==='meta'&&r.itemId==='main');if(hasMeta){apply(rows);allowWrites=true;show('✓ Appwrite: '+(db.lessons||[]).length+' lessen, '+(db.projects||[]).length+' projecten');document.getElementById('sm-cloud-import').style.display='none';}else{allowWrites=false;show('⚠ Import onderbroken · kies hetzelfde databasebestand opnieuw');document.getElementById('sm-cloud-import').style.display='none';}}
-  else{allowWrites=false;show('Appwrite is leeg · klik op Eenmalig gegevens koppelen');document.getElementById('sm-cloud-import').style.display='none';}
-  ready=true;
- }catch(e){ready=false;allowWrites=false;show('⚠ Online opslag niet klaar: '+e.message);document.getElementById('sm-cloud-import').style.display='none';alert('Appwrite kan de gegevens nog niet lezen. Controleer de tabelkolommen en rechten.\n\n'+e.message);}
+  const rows=await fetchRemote();buildBaseline(rows);
+  const hasMeta=rows.some(r=>r.kind==='meta'&&r.itemId==='main');
+  if(hasMeta){
+   const d=dataFromRows(rows);
+   if(d.lessons.length>=80&&d.projects.length>=12){apply(rows);allowWrites=true;show('✓ Appwrite actief: '+d.lessons.length+' lessen en '+d.projects.length+' projecten');}
+   else{allowWrites=false;show('⚠ Online overdracht onvolledig: '+d.lessons.length+'/80 lessen, '+d.projects.length+'/12 projecten. Kies de volledige JSON-back-up.');}
+  }else{
+   allowWrites=false;
+   show(rows.length?'⚠ '+rows.length+' records online, import nog niet afgerond. Kies de volledige JSON-back-up.':'Appwrite is nog leeg · kies de volledige JSON-back-up.');
+  }
+  document.getElementById('sm-cloud-import').style.display='none';ready=true;
+ }catch(e){ready=false;allowWrites=false;show('⚠ Appwrite niet bereikbaar: '+e.message);alert('Appwrite kan niet gelezen worden: '+e.message)}
 }
 async function uploadAll(skipConfirmation=false){
  if(!ready)return alert('De online verbinding is niet klaar.');
@@ -1227,8 +1235,9 @@ async function uploadAll(skipConfirmation=false){
   for(const r of rows){const k=key(r.kind,{id:r.itemId});
    if(!found.has(k)){
     const rowId=await digest(k);
-    await tables.createDocument(DB,TABLE,rowId,{kind:r.kind,itemId:r.itemId,payload:r.payload});
+    await createWithRetry(rowId,{kind:r.kind,itemId:r.itemId,payload:r.payload});
     created++;
+    await pause(160);
    }
    show('Online importeren: '+(++i)+' / '+rows.length+' (nieuw: '+created+')');
   }
@@ -1236,10 +1245,10 @@ async function uploadAll(skipConfirmation=false){
   if(!after.some(r=>r.kind==='meta'&&r.itemId==='main'))throw Error('Centrale instellingen ontbreken na import.');
   const loadedData=dataFromRows(after);
   if(loadedData.lessons.length<db.lessons.length||loadedData.projects.length<db.projects.length)throw Error('Controle mislukt: minder lessen/projecten online dan in de import.');
-  buildBaseline(after);allowWrites=true;
+  buildBaseline(after);apply(after);allowWrites=true;
   show('✓ Appwrite gecontroleerd: '+loadedData.lessons.length+' lessen, '+loadedData.projects.length+' projecten');
   document.getElementById('sm-cloud-import').style.display='none';
-  alert('Online import gecontroleerd. Open de lesplanner op een andere pc om te controleren of dezelfde lessen zichtbaar zijn.');
+  alert('Overdracht voltooid en gecontroleerd: '+loadedData.lessons.length+' lessen en '+loadedData.projects.length+' projecten staan in Appwrite. De lesplanner gebruikt nu de online gegevens.');
  }catch(e){allowWrites=false;show('⚠ Import onderbroken: '+e.message);alert('Import onderbroken. Er zijn geen bestaande online records overschreven. Na controle kun je de import hervatten.\n'+e.message)}
  finally{busy=false;}
 }
@@ -1260,7 +1269,7 @@ async function sync(){
  }catch(e){allowWrites=false;show('⚠ Synchronisatie gestopt: '+e.message);alert('Online opslaan mislukt. Maak nu een JSON-back-up.\n'+e.message)}finally{busy=false;}
 }
 window.SMCloud={canEdit(){return allowWrites;},changed(){if(!allowWrites)return;clearTimeout(timer);timer=setTimeout(sync,1300);}};
-document.getElementById('sm-cloud-refresh').addEventListener('click',async()=>{if(!ready)return alert('Geen online verbinding');if(!confirm('Online gegevens opnieuw laden? Maak eerst een back-up als je nog niet gesynchroniseerde wijzigingen hebt.'))return;try{const rows=await fetchRemote();if(rows.length){apply(rows);buildBaseline(rows);allowWrites=true;show('✓ Online opnieuw geladen')}else show('Appwrite is nog leeg')}catch(e){alert(e.message)}});
+document.getElementById('sm-cloud-refresh').addEventListener('click',async()=>{if(!ready)return alert('Geen online verbinding');if(!confirm('Online gegevens opnieuw laden? Maak eerst een back-up van eventuele niet opgeslagen wijzigingen.'))return;await initialLoad();});
 document.getElementById('sm-cloud-import').addEventListener('click',uploadAll);
 document.getElementById('smCompleteDbFile').addEventListener('change',async event=>{
  const input=event.target,file=input.files?.[0];if(!file)return;
