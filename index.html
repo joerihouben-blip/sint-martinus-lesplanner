@@ -121,6 +121,11 @@ body>nav#nav{padding:10px 7px!important;gap:2px!important}body>nav#nav button{pa
 }
 @media screen and (min-width:1001px){body{grid-template-columns:minmax(0,1fr) 175px!important}}
 </style>
+<style id="matrix-grid-lines">
+#goalReport table.sm-matrix th,#goalReport table.sm-matrix td{border-right:1px solid #9aafc1!important;border-bottom:1px solid #9aafc1!important;box-sizing:border-box!important}
+#goalReport table.sm-matrix tr>*:first-child{border-left:1px solid #9aafc1!important}
+#goalReport table.sm-matrix thead tr:first-child>*{border-top:1px solid #9aafc1!important}
+</style>
 </head><body><div id="sm-auth-cover"><div class="sm-auth-card"><h2>Sint-Martinus Lesplanner</h2><p>Log in met je Appwrite-account.</p><form id="sm-auth-form"><label for="sm-auth-email">E-mailadres</label><input autocomplete="username" id="sm-auth-email" required="" type="email"/><label for="sm-auth-pass">Wachtwoord</label><input autocomplete="current-password" id="sm-auth-pass" required="" type="password"/><button id="sm-auth-submit" type="submit">Aanmelden</button></form><p class="sm-auth-error" id="sm-auth-error" role="alert"></p></div></div><header><div><h1>Sint-Martinus · Lesplanner</h1><small style="display:block;color:#fff7b0;font-weight:700">VERSIE 17-11 · HERSTEL 4</small><small>Online lesplanner · Sint-Martinus Herk-de-Stad</small></div><div class="row"><label style="color:white">Schooljaar <select id="year" onchange="yearChanged()"></select></label><span id="folderStatus" style="font-size:12px;color:#e6f6ff">Appwrite wordt gecontroleerd…</span><button class="btn" onclick="backup()">Back-up downloaden</button><button class="btn" id="sm-cloud-refresh" style="display:none" type="button">↻ Online verversen</button><button class="btn primary" id="sm-cloud-import" style="display:none" type="button">↑ Import hervatten</button></div></header><nav id="nav"></nav><main class="wrap">
 <section class="page active" id="home"><div class="dashboard-intro"><h2>Mijn lesplanner</h2><p>Alle voorbereidingen, leerplandoelen, leerlingen en projecten op één plaats. Je bestaande gegevens blijven behouden.</p></div>
 <div class="dashboard-stats" id="smDashboardStats"><div class="dashboard-stat"><strong>—</strong><span>Lessen</span></div></div>
