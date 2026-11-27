@@ -1442,7 +1442,7 @@ const dataFromRows=rows=>{
  return d;
 };
 let authTeachers=null;
-async function fetchTeachers(){try{const r=await window.smAiCall("lesplanner-teachers",{});if(!Array.isArray(r.teachers)||!r.teachers.every(x=>typeof x==="string"))throw Error("Ongeldige lijst");authTeachers=r.teachers;return true}catch(e){authTeachers=null;console.warn("Leerkrachtensynchronisatie",e);return false}}
+async function fetchTeachers(){try{const r=await window.smAiCall("6b0989d9003dc7e783bd",{});const list=r.users||r.teachers;if(!Array.isArray(list))throw Error("Ongeldige lijst");authTeachers=list.map(x=>typeof x==='string'?x:x.name).filter(x=>typeof x==='string'&&x.trim());return true}catch(e){authTeachers=[];console.warn("Leerkrachtensynchronisatie",e);return false}}
 const apply=rows=>{const d=dataFromRows(rows);if(authTeachers!==null)d.teachers=authTeachers.slice();localStorage.setItem(window.SM_STORAGE_KEY,JSON.stringify(d));window.SM_DB=d;Object.assign(GOALS,d.customPlans||{});renderAll();newLesson();newProject();resetQuestion();if(typeof agendaRender==='function')agendaRender();go('home');};
 const buildBaseline=rows=>{baseline=new Map(rows.map(r=>[key(r.kind,{id:r.itemId}),r]));};
 async function fetchRemote(){return await listAll()}
@@ -1453,7 +1453,7 @@ async function initialLoad(){
   const hasMeta=rows.some(r=>r.kind==='meta'&&r.itemId==='main');
   if(hasMeta){
    const d=dataFromRows(rows);
-   {apply(rows);allowWrites=true;show('✓ Appwrite actief: '+d.lessons.length+' lessen en '+d.projects.length+' projecten · '+(teachersOK?'leerkrachten uit Auth':'leerkrachten: oude lijst (Auth-koppeling ontbreekt)'));}
+   {apply(rows);allowWrites=true;show('✓ Appwrite actief: '+d.lessons.length+' lessen en '+d.projects.length+' projecten · '+(teachersOK?'leerkrachten uit Auth':'leerkrachten ophalen mislukt — controleer functie en rechten'));}
 
   }else{
    allowWrites=false;
